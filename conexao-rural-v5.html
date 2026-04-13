@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qualidade do Ar, Produção Rural e Saúde Respiratória</title>
+  <meta name="description" content="Projeto de extensão da 12° turma do curso de Medicina da Unifacig sobre saúde respiratória em Manhuaçu e região." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f0e6;
+      --bg-2: #eadcc8;
+      --surface: rgba(255, 250, 243, 0.9);
+      --surface-strong: #fffaf4;
+      --line: rgba(86, 58, 36, 0.12);
+      --text: #2c1c12;
+      --muted: #6b5647;
+      --primary: #6b4a32;
+      --primary-2: #9e6d44;
+      --accent: #6b7a3d;
+      --accent-2: #c28a48;
+      --shadow: 0 22px 60px rgba(44, 28, 18, 0.10);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1220px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(194,138,72,0.12), transparent 26%),
+        radial-gradient(circle at top right, rgba(107,122,61,0.10), transparent 24%),
+        linear-gradient(180deg, #fbf6f0 0%, #efe2d2 100%);
+      line-height: 1.72;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { max-width: 100%; display: block; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 250, 243, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      font-weight: 900;
+      font-size: 1rem;
+      box-shadow: 0 12px 26px rgba(107, 74, 50, 0.24);
+      flex-shrink: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1rem;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav a {
+      position: relative;
+      transition: 0.22s ease;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: 0.22s ease;
+    }
+
+    .nav a:hover { color: var(--primary); }
+    .nav a:hover::after { width: 100%; }
+
+    .hero {
+      padding: 74px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-copy {
+      padding: 20px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(107, 74, 50, 0.08);
+      border: 1px solid rgba(107, 74, 50, 0.10);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.96;
+      letter-spacing: -2.6px;
+      margin-bottom: 22px;
+      max-width: 840px;
+    }
+
+    .hero-title .line-1,
+    .hero-title .line-2 {
+      display: block;
+    }
+
+    .hero-title .line-2 {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-lead {
+      max-width: 720px;
+      font-size: 1.06rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 16px;
+      font-weight: 700;
+      transition: transform 0.22s ease, background 0.22s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 14px 28px rgba(107, 74, 50, 0.18);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: rgba(255, 250, 243, 0.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover { background: white; }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat,
+    .card,
+    .visual-card,
+    .quote-box {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,250,243,0.97), rgba(255,250,243,0.86));
+      box-shadow: var(--shadow);
+    }
+
+    .stat {
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.52rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .visual-card {
+      padding: 20px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .illustration-shell {
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(107, 74, 50, 0.10);
+      background: linear-gradient(180deg, #f0e2cf 0%, #e7d2b7 100%);
+    }
+
+    .visual-label {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .visual-card h3 {
+      font-size: 1.44rem;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .visual-card p {
+      color: var(--muted);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(107,74,50,0.18), transparent);
+      margin: 28px 0 6px;
+    }
+
+    .section {
+      padding: 86px 0;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.04;
+      letter-spacing: -2px;
+    }
+
+    .section-desc {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(194,138,72,0.06), rgba(107,122,61,0.04), transparent 56%);
+      pointer-events: none;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card h3 {
+      font-size: 1.18rem;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .prose p + p {
+      margin-top: 14px;
+    }
+
+    .care-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .care-card {
+      min-height: 100%;
+    }
+
+    .care-card h3 {
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
+
+    .care-card .mini-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(107, 74, 50, 0.08);
+      border: 1px solid rgba(107, 74, 50, 0.10);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .care-card p {
+      color: var(--muted);
+    }
+
+    .quote-box {
+      padding: 34px;
+      background: linear-gradient(135deg, rgba(107,74,50,0.10), rgba(107,122,61,0.08));
+    }
+
+    .quote-box p {
+      font-size: clamp(1.18rem, 2vw, 1.72rem);
+      line-height: 1.34;
+      color: var(--text);
+      max-width: 940px;
+    }
+
+
+    .video-shell {
+      padding: 22px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,250,243,0.97), rgba(255,250,243,0.88));
+      box-shadow: var(--shadow);
+    }
+
+    .video-card {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .video-poster {
+      min-height: 340px;
+      border-radius: 26px;
+      border: 1px solid rgba(107, 74, 50, 0.12);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 28px;
+      background: #d7c8b8;
+    }
+
+    .video-poster img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-poster::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(44, 28, 18, 0.08) 0%, rgba(44, 28, 18, 0.58) 100%);
+    }
+
+    .play-badge {
+      position: absolute;
+      top: 28px;
+      left: 28px;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: rgba(255, 250, 243, 0.14);
+      border: 1px solid rgba(255, 250, 243, 0.26);
+      backdrop-filter: blur(8px);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 20px 40px rgba(44, 28, 18, 0.16);
+    }
+
+    .play-badge::before {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      margin-left: 6px;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-left: 22px solid white;
+    }
+
+    .video-poster-content {
+      position: relative;
+      z-index: 1;
+      color: #fffaf4;
+      max-width: 500px;
+    }
+
+    .video-eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 250, 243, 0.14);
+      border: 1px solid rgba(255, 250, 243, 0.18);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .video-poster h3 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.04;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .video-poster p {
+      color: rgba(255, 250, 243, 0.9);
+      margin: 0;
+      max-width: 440px;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      padding: 8px 4px;
+    }
+
+    .video-info p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .video-points {
+      display: grid;
+      gap: 12px;
+    }
+
+    .video-point {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(107, 74, 50, 0.05);
+      border: 1px solid rgba(107, 74, 50, 0.10);
+      color: var(--muted);
+    }
+
+    .video-point strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .video-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .video-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 14px 28px rgba(107, 74, 50, 0.16);
+    }
+
+    .video-note {
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 28px 0 36px;
+      border-top: 1px solid var(--line);
+      background: rgba(255,250,243,0.72);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .section-header,
+      .grid-2,
+      .care-grid,
+      .hero-stats,
+      .video-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        letter-spacing: -2px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        gap: 12px;
+      }
+
+      .hero {
+        padding-top: 52px;
+      }
+
+      .hero-title {
+        font-size: clamp(2.4rem, 12vw, 4.1rem);
+        line-height: 0.98;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">AR</div>
+        <div class="brand-text">
+          <strong>Saúde Respiratória</strong>
+          <span>Projeto de extensão • Medicina • Unifacig</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#tema">Tema</a>
+        <a href="#cuidados">Cuidados em casa</a>
+        <a href="#video">Vídeo</a>
+        <a href="#encerramento">Mensagem final</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="tema">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">12° turma do curso de Medicina da Unifacig • Manhuaçu e região</div>
+
+        <h1 class="hero-title">
+          <span class="line-1">Qualidade do Ar,</span>
+          <span class="line-2">Produção Rural e Saúde Respiratória</span>
+        </h1>
+
+        <p class="hero-lead">
+          Este é um projeto de atividades de extensão da 12° turma do curso de Medicina da Unifacig, voltado para Manhuaçu e região, uma importante área cafeeira.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#cuidados">Ver cuidados em casa</a>
+          <a class="btn btn-ghost" href="#encerramento">Ler mensagem final</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <strong>Manhuaçu</strong>
+            <span>e região cafeeira</span>
+          </div>
+          <div class="stat">
+            <strong>Safra e pulverização</strong>
+            <span>como contexto de atenção</span>
+          </div>
+          <div class="stat">
+            <strong>Informação prática</strong>
+            <span>para cuidados em casa</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-visual">
+        <div class="visual-card">
+          <div class="illustration-shell" aria-hidden="true">
+            <svg viewBox="0 0 760 520" role="img" aria-label="Ilustração de região rural cafeeira com circulação de ar" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#efe4d4"/>
+                  <stop offset="100%" stop-color="#d9c2a5"/>
+                </linearGradient>
+                <linearGradient id="hill1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7a8f49"/>
+                  <stop offset="100%" stop-color="#5d6e39"/>
+                </linearGradient>
+                <linearGradient id="hill2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#9b6b43"/>
+                  <stop offset="100%" stop-color="#7f5535"/>
+                </linearGradient>
+              </defs>
+              <rect width="760" height="520" fill="url(#sky)"/>
+              <circle cx="565" cy="110" r="56" fill="#f4d39d" opacity="0.95"/>
+              <path d="M0 260C95 220 155 208 238 228C333 252 408 319 504 305C598 292 656 213 760 228V520H0Z" fill="url(#hill1)"/>
+              <path d="M0 318C88 302 160 336 246 352C344 370 434 352 532 314C619 280 685 272 760 286V520H0Z" fill="url(#hill2)" opacity="0.94"/>
+              <path d="M120 315C165 302 216 297 262 308C317 322 361 364 426 366C494 369 552 335 616 307" fill="none" stroke="#f4ede2" stroke-width="10" stroke-linecap="round" opacity="0.48"/>
+              <path d="M88 155C148 126 211 126 276 152" fill="none" stroke="#fff7ed" stroke-width="8" stroke-linecap="round" opacity="0.66"/>
+              <path d="M116 183C182 158 247 161 317 184" fill="none" stroke="#fff7ed" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+              <rect x="88" y="298" width="114" height="86" rx="16" fill="#f7efe4"/>
+              <rect x="100" y="318" width="32" height="66" rx="8" fill="#cfb496"/>
+              <rect x="142" y="332" width="44" height="52" rx="8" fill="#dbc4ab"/>
+              <polygon points="78,312 146,266 214,312" fill="#704930"/>
+              <g fill="#476133">
+                <circle cx="380" cy="360" r="30"/>
+                <circle cx="434" cy="334" r="28"/>
+                <circle cx="484" cy="356" r="32"/>
+                <circle cx="536" cy="328" r="30"/>
+                <circle cx="588" cy="356" r="34"/>
+              </g>
+              <g stroke="#69452f" stroke-width="8" stroke-linecap="round">
+                <line x1="380" y1="388" x2="380" y2="432"/>
+                <line x1="434" y1="362" x2="434" y2="430"/>
+                <line x1="484" y1="388" x2="484" y2="434"/>
+                <line x1="536" y1="358" x2="536" y2="428"/>
+                <line x1="588" y1="390" x2="588" y2="436"/>
+              </g>
+              <path d="M446 158C502 148 556 161 614 184" fill="none" stroke="#fff7ed" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+              <path d="M472 126C534 119 586 131 642 156" fill="none" stroke="#fff7ed" stroke-width="7" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </div>
+          <div>
+            <span class="visual-label">Contexto rural</span>
+            <h3>Informação prática para regiões com intensa atividade agrícola.</h3>
+            <p>O site foi reorganizado para destacar o contexto cafeeiro, a exposição à poeira e os cuidados respiratórios simples que podem ser feitos em casa.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider"></div>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">Apresentação</span>
+            <h2 class="section-title">Qualidade do ar, produção rural e saúde respiratória.</h2>
+          </div>
+          <p class="section-desc">Conteúdo fiel ao texto-base, com foco em educação em saúde e cuidados respiratórios que podem ser realizados em casa.</p>
+        </div>
+
+        <article class="card prose">
+          <p>Este é um projeto de atividades de extensão da 12° turma do curso de Medicina da Unifacig, voltado para Manhuaçu e região, uma importante área cafeeira.</p>
+          <p>Durante a safra do café e os períodos de pulverização, o ar pode ser impactado por poeira orgânica e pela deriva de agrotóxicos, quando partículas químicas são levadas pelo vento para além da lavoura. Esse cenário pode intensificar desconfortos respiratórios e agravar quadros como rinite, bronquite e asma, sobretudo em populações mais expostas.</p>
+          <p>Diante desse cenário, criamos este site com o intuito de educar sobre cuidados com a saúde respiratória que podem ser realizados em casa.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="cuidados">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">Cuidados em casa</span>
+            <h2 class="section-title">Cuidados respiratórios que você pode fazer em casa.</h2>
+          </div>
+          <p class="section-desc">As orientações abaixo foram mantidas de forma fiel, organizadas em blocos para facilitar leitura e uso no dia a dia.</p>
+        </div>
+
+        <div class="care-grid">
+          <article class="card care-card">
+            <div class="mini-label">Cuidado 01</div>
+            <h3>Lavagem nasal com solução salina</h3>
+            <p>A lavagem nasal ajuda a remover poeira, secreções e partículas inaladas, aliviando a irritação das vias aéreas. Para fazer, utilize soro fisiológico 0,9% (pode ser comprado pronto). Com uma seringa (sem agulha) ou um recipiente próprio (como lota/neti pot), incline levemente a cabeça para o lado e aplique o soro em uma narina, deixando o líquido sair pela outra ou pela boca. Repita do outro lado. Pode ser feita 1 a 2 vezes ao dia, especialmente após exposição à poeira.</p>
+          </article>
+
+          <article class="card care-card">
+            <div class="mini-label">Cuidado 02</div>
+            <h3>Nebulização (inalação)</h3>
+            <p>A nebulização ajuda a umidificar as vias respiratórias, facilitando a respiração e a eliminação de secreções. Para fazer, utilize um aparelho nebulizador com soro fisiológico. Coloque o soro no reservatório, ligue o aparelho e respire normalmente pela máscara por cerca de 10 a 15 minutos. Medicamentos só devem ser adicionados com orientação médica.</p>
+          </article>
+
+          <article class="card care-card">
+            <div class="mini-label">Cuidado 03</div>
+            <h3>Inalação de vapor (alternativa simples)</h3>
+            <p>Caso não tenha nebulizador, uma alternativa é a inalação de vapor. Ferva água, coloque em um recipiente e, com cuidado para não se queimar, aproxime o rosto e respire o vapor por alguns minutos. Pode colocar uma toalha sobre a cabeça para concentrar o vapor. Evite em crianças pequenas pelo risco de queimaduras.</p>
+          </article>
+
+          <article class="card care-card">
+            <div class="mini-label">Cuidado 04</div>
+            <h3>Manter o ambiente limpo e ventilado</h3>
+            <p>Abra janelas diariamente para permitir a circulação do ar. Evite acúmulo de poeira limpando superfícies com pano úmido (não use vassoura seca). Evite tapetes, cortinas pesadas e objetos que acumulem poeira, principalmente no quarto.</p>
+          </article>
+
+          <article class="card care-card" style="grid-column: 1 / -1;">
+            <div class="mini-label">Cuidado 05</div>
+            <h3>Cuidados durante a safra do café e pulverizações</h3>
+            <p>Evite permanecer ao ar livre durante períodos de colheita intensa ou aplicação de agrotóxicos. Se precisar sair, dê preferência ao uso de máscaras (como PFF2/N95), que ajudam a filtrar partículas do ar. Ao chegar em casa, lave o rosto, mãos e, se possível, troque de roupa para reduzir a exposição contínua.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="video">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">Vídeo</span>
+            <h2 class="section-title">Vídeo demonstrativo de lavagem nasal.</h2>
+          </div>
+          <p class="section-desc">O conteúdo abaixo complementa as orientações da página com uma demonstração visual do cuidado respiratório em casa.</p>
+        </div>
+
+        <div class="video-shell">
+          <div class="video-card">
+            <div class="video-poster">
+              <img src="data:image/jpeg;base64,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" alt="Demonstração de lavagem nasal com solução salina">
+              <div class="play-badge" aria-hidden="true"></div>
+              <div class="video-poster-content">
+                <span class="video-eyebrow">Conteúdo complementar</span>
+                <h3>Assista ao vídeo no YouTube.</h3>
+                <p>O vídeo mostra, de forma visual, a execução da lavagem nasal como medida complementar de cuidado respiratório em casa.</p>
+              </div>
+            </div>
+
+            <div class="video-info">
+              <p>Este vídeo não permite reprodução incorporada nesta página. Para assistir, abra diretamente no YouTube pelo botão abaixo.</p>
+
+              <div class="video-points">
+                <div class="video-point">
+                  <strong>Quando usar</strong>
+                  Após exposição à poeira ou em momentos de irritação das vias aéreas, conforme as orientações apresentadas no site.
+                </div>
+
+                <div class="video-point">
+                  <strong>O que você verá</strong>
+                  Uma demonstração prática da lavagem nasal com solução salina, reforçando o conteúdo educativo da página.
+                </div>
+              </div>
+
+              <div class="video-actions">
+                <a
+                  class="video-link"
+                  href="https://www.youtube.com/watch?v=B6DBScKQO7E"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Assistir no YouTube
+                </a>
+                <span class="video-note">O vídeo será aberto em uma nova aba.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="encerramento">
+      <div class="container">
+        <div class="quote-box">
+          <p>Promover pequenos cuidados no dia a dia pode fazer grande diferença na saúde respiratória, especialmente em regiões com intensa atividade agrícola. Este projeto busca levar informação acessível e prática para proteger você e sua família.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>Projeto de atividades de extensão • 12° turma do curso de Medicina da Unifacig</div>
+      <div>Manhuaçu e região • Saúde respiratória</div>
+    </div>
+  </footer>
+</body>
+</html>
